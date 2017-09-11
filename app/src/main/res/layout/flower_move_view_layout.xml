@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/flowerbg">
+
+    <ImageView
+        android:id="@+id/iv_basket"
+        android:layout_width="@dimen/size_387"
+        android:layout_height="@dimen/size_440"
+        android:layout_marginLeft="@dimen/size_550"
+        android:layout_marginTop="@dimen/size_100"
+        android:src="@mipmap/basket" />
+
+
+    <ImageView
+        android:id="@+id/iv_basket_flower1"
+        android:layout_width="@dimen/size_252"
+        android:layout_height="@dimen/size_231"
+        android:layout_marginLeft="@dimen/size_460"
+        android:layout_marginTop="@dimen/size_140"
+        android:src="@mipmap/flower1" />
+
+    <ImageView
+        android:id="@+id/iv_basket_flower2"
+        android:layout_width="@dimen/size_209"
+        android:layout_height="@dimen/size_199"
+        android:layout_marginLeft="@dimen/size_620"
+        android:layout_marginTop="@dimen/size_190"
+        android:src="@mipmap/flower2" />
+
+    <ImageView
+        android:id="@+id/iv_basket_flower3"
+        android:layout_width="@dimen/size_175"
+        android:layout_height="@dimen/size_208"
+        android:layout_marginLeft="@dimen/size_780"
+        android:layout_marginTop="@dimen/size_160"
+        android:src="@mipmap/flower3" />
+
+
+    <ImageView
+        android:id="@+id/iv_flower1"
+        android:layout_width="@dimen/size_334"
+        android:layout_height="@dimen/size_318"
+        android:layout_marginLeft="@dimen/size_60"
+        android:layout_marginTop="@dimen/size_350"
+        android:src="@mipmap/flower2" />
+
+    <ImageView
+        android:id="@+id/iv_flower2"
+        android:layout_width="@dimen/size_280"
+        android:layout_height="@dimen/size_332"
+        android:layout_marginLeft="@dimen/size_450"
+        android:layout_marginTop="@dimen/size_360"
+        android:src="@mipmap/flower3" />
+
+
+    <ImageView
+        android:id="@+id/iv_flower3"
+        android:layout_width="@dimen/size_403"
+        android:layout_height="@dimen/size_369"
+        android:layout_marginLeft="@dimen/size_730"
+        android:layout_marginTop="@dimen/size_370"
+        android:src="@mipmap/flower1" />
+
+
+</RelativeLayout>

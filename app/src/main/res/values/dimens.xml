@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="FlowerImangeViewWidth">@dimen/size_500</dimen>
+    <dimen name="FlowerImangeViewHeight">@dimen/size_500</dimen>
+
+
+
+
+</resources>
