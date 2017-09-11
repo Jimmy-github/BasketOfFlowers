@@ -5,26 +5,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.bagelplay.basketofflowers.Config;
+import com.bagelplay.basketofflowers.utils.Config;
 import com.bagelplay.basketofflowers.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.breadCrumbShortTitle;
-import static android.R.attr.id;
-import static android.R.attr.visibility;
-import static android.R.attr.widgetCategory;
-import static android.R.attr.x;
-import static android.R.attr.y;
 
 /**
  * Created by zhangtianjie on 2017/9/10.
@@ -48,6 +39,9 @@ public class FlowerMoveView extends RelativeLayout {
 
     private final int flower1messageDown = 1000, flower1messageUp = 1001, flower2messageDown = 2000, flower2messageUp = 2001, flower3messageDown = 3000,
             flower3messageUp = 3001;
+
+
+    private boolean flower1isfinish,flower2isfinish,flower3isfinish;
 
 
     public FlowerMoveView(Context context) {
@@ -253,7 +247,7 @@ public class FlowerMoveView extends RelativeLayout {
                 if (sendMessage == -1)
                     return true;
 
-                if(!isInFlowerRange(mIvBasketWidth, mIvBasketHeight, mIvBasketMarginLeft, mIvBasketMarginTop, x, y)) {//判断是否在篮子范围 ,不在
+                if (!isInFlowerRange(mIvBasketWidth, mIvBasketHeight, mIvBasketMarginLeft, mIvBasketMarginTop, x, y)) {//判断是否在篮子范围 ,不在
 
                     if (sendMessage == flower1messageDown) {
                         sendMessage = flower1messageUp;
@@ -277,19 +271,28 @@ public class FlowerMoveView extends RelativeLayout {
                     timeHandler.sendMessage(msgup);
 
 
-
-                }else{
+                } else {
                     if (sendMessage == flower1messageDown) {
 
                         mIvFlower1.setVisibility(GONE);
                         mIvBasketFlower2.setVisibility(VISIBLE);
+                        flower1isfinish=true;
 
                     } else if (sendMessage == flower2messageDown) {
                         mIvFlower2.setVisibility(GONE);
                         mIvBasketFlower3.setVisibility(VISIBLE);
+                        flower2isfinish=true;
                     } else if (sendMessage == flower3messageDown) {
                         mIvFlower3.setVisibility(GONE);
                         mIvBasketFlower1.setVisibility(VISIBLE);
+                        flower3isfinish=true;
+                    }
+
+
+                    if(flower1isfinish&&flower2isfinish&&flower3isfinish){
+                        if(mOnFlowerMoveViewFinishListener!=null){
+                            mOnFlowerMoveViewFinishListener.onFinish();
+                        }
                     }
 
                 }
@@ -304,6 +307,15 @@ public class FlowerMoveView extends RelativeLayout {
 
     }
 
+    private OnFlowerMoveViewFinishListener mOnFlowerMoveViewFinishListener;
+
+    public void setOnFlowerMoveViewFinishListener(OnFlowerMoveViewFinishListener mOnFlowerMoveViewFinishListener) {
+        this.mOnFlowerMoveViewFinishListener = mOnFlowerMoveViewFinishListener;
+    }
+
+    public interface OnFlowerMoveViewFinishListener {
+        void onFinish();
+    }
 
     private void IVTouch(ImageView mIvFlower, int mIvFlowerWidth, int mIvFlowerHeight, int x, int y, int message) {
         LayoutParams flowerLayout = new LayoutParams(
