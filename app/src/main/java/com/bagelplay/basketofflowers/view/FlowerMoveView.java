@@ -21,6 +21,7 @@ import java.util.List;
 
 import static android.R.attr.breadCrumbShortTitle;
 import static android.R.attr.id;
+import static android.R.attr.visibility;
 import static android.R.attr.widgetCategory;
 import static android.R.attr.x;
 import static android.R.attr.y;
@@ -35,14 +36,17 @@ public class FlowerMoveView extends RelativeLayout {
 
     private List<ImageView> mBasketFlowers;
 
-    private int mIvFlower1Width, mIvFlower1Height,mIvFlower1MarginLeft,mIvFlower1MarginTop;
+    private int mIvFlower1Width, mIvFlower1Height, mIvFlower1MarginLeft, mIvFlower1MarginTop;
+    private int mIvFlower2Width, mIvFlower2Height, mIvFlower2MarginLeft, mIvFlower2MarginTop;
+    private int mIvFlower3Width, mIvFlower3Height, mIvFlower3MarginLeft, mIvFlower3MarginTop;
 
+    private int mIvBasketWidth, mIvBasketHeight, mIvBasketMarginLeft, mIvBasketMarginTop;
     private int WIDTH, HEIGHT;
 
 
     private Handler timeHandler;
 
-    private final int flower1messageDown = 1000,flower1messageUp = 1001, flower2messageDown = 2000,flower2messageUp = 2001, flower3messageDown = 3000,
+    private final int flower1messageDown = 1000, flower1messageUp = 1001, flower2messageDown = 2000, flower2messageUp = 2001, flower3messageDown = 3000,
             flower3messageUp = 3001;
 
 
@@ -58,28 +62,32 @@ public class FlowerMoveView extends RelativeLayout {
         LayoutInflater.from(context).inflate(R.layout.flower_move_view_layout, this, true);
 
 
-
         intUI();
 
         initFlowerSize();
 
-        initBasketFlowers();
+        initBasketSize();
 
+        initBasketFlowers();
 
 
         initTimeHandler();
 
 
+    }
 
+    private void initBasketSize() {
+        mIvBasketWidth = getResources().getDimensionPixelSize(R.dimen.size_330);
+        mIvBasketHeight = getResources().getDimensionPixelSize(R.dimen.size_230);
+        mIvBasketMarginLeft = getResources().getDimensionPixelSize(R.dimen.size_580);
+        mIvBasketMarginTop = getResources().getDimensionPixelSize(R.dimen.size_130);
     }
 
 
-
-    private boolean isInFlowerRange(int mIvFlowerWidth, int mIvFlowerHeight,int mIvFlowerMarginLeft,int mIvFlowerMarginTop, int x,int y) {
-
+    private boolean isInFlowerRange(int mIvFlowerWidth, int mIvFlowerHeight, int mIvFlowerMarginLeft, int mIvFlowerMarginTop, int x, int y) {
 
 
-        if(x<mIvFlowerMarginLeft+mIvFlowerWidth && x>mIvFlowerMarginLeft && y<mIvFlowerMarginTop+mIvFlowerHeight && y>mIvFlowerMarginTop){
+        if (x < mIvFlowerMarginLeft + mIvFlowerWidth && x > mIvFlowerMarginLeft && y < mIvFlowerMarginTop + mIvFlowerHeight && y > mIvFlowerMarginTop) {
 
             return true;
         }
@@ -93,12 +101,25 @@ public class FlowerMoveView extends RelativeLayout {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case flower1messageDown:
-                        flowerSetPosition(msg, mIvFlower1, mIvFlower1Width, mIvFlower1Height,flower1messageDown);
+                        flowerSetPosition(msg, mIvFlower1, mIvFlower1Width, mIvFlower1Height, flower1messageDown);
                         break;
-                    case  flower1messageUp:
-                        recoverFlowerPosition(mIvFlower1,mIvFlower1Width, mIvFlower1Height,mIvFlower1MarginLeft ,mIvFlower1MarginTop);
+                    case flower1messageUp:
+                        recoverFlowerPosition(mIvFlower1, mIvFlower1Width, mIvFlower1Height, mIvFlower1MarginLeft, mIvFlower1MarginTop);
                         break;
 
+                    case flower2messageDown:
+                        flowerSetPosition(msg, mIvFlower2, mIvFlower2Width, mIvFlower2Height, flower2messageDown);
+                        break;
+                    case flower2messageUp:
+                        recoverFlowerPosition(mIvFlower2, mIvFlower2Width, mIvFlower2Height, mIvFlower2MarginLeft, mIvFlower2MarginTop);
+                        break;
+
+                    case flower3messageDown:
+                        flowerSetPosition(msg, mIvFlower3, mIvFlower3Width, mIvFlower3Height, flower3messageDown);
+                        break;
+                    case flower3messageUp:
+                        recoverFlowerPosition(mIvFlower3, mIvFlower3Width, mIvFlower3Height, mIvFlower3MarginLeft, mIvFlower3MarginTop);
+                        break;
                 }
 
                 super.handleMessage(msg);
@@ -107,7 +128,7 @@ public class FlowerMoveView extends RelativeLayout {
 
     }
 
-    private void flowerSetPosition(Message msg, ImageView mIvFlower, int mIvFlowerWidth, int mIvFlowerHeight,int message) {
+    private void flowerSetPosition(Message msg, ImageView mIvFlower, int mIvFlowerWidth, int mIvFlowerHeight, int message) {
         int x = msg.getData().getInt("x");
         int y = msg.getData().getInt("y");
 
@@ -124,10 +145,10 @@ public class FlowerMoveView extends RelativeLayout {
 
 
         IVTouch(mIvFlower, mIvFlowerWidth, mIvFlowerHeight
-                , x, y,message);
+                , x, y, message);
     }
 
-    private void recoverFlowerPosition(ImageView mIvFlower,int mIvFlowerWidth, int mIvFlowerHeight,int leftMargin ,int topMargin) {
+    private void recoverFlowerPosition(ImageView mIvFlower, int mIvFlowerWidth, int mIvFlowerHeight, int leftMargin, int topMargin) {
 
         LayoutParams flowerLayout = new LayoutParams(
                 mIvFlowerWidth, mIvFlowerHeight);
@@ -138,6 +159,7 @@ public class FlowerMoveView extends RelativeLayout {
 
         mIvFlower.setLayoutParams(flowerLayout);
     }
+
     public void initBasketFlowers() {
         mBasketFlowers = new ArrayList<>();
         mBasketFlowers.add(mIvBasketFlower1);
@@ -161,19 +183,23 @@ public class FlowerMoveView extends RelativeLayout {
         mIvFlower3 = findViewById(R.id.iv_flower3);
 
 
-
-
-
-
     }
 
     private void initFlowerSize() {
         mIvFlower1Width = getResources().getDimensionPixelSize(R.dimen.size_334);
         mIvFlower1Height = getResources().getDimensionPixelSize(R.dimen.size_318);
-        mIvFlower1MarginLeft=getResources().getDimensionPixelSize(R.dimen.size_60);
-        mIvFlower1MarginTop=getResources().getDimensionPixelSize(R.dimen.size_350);
+        mIvFlower1MarginLeft = getResources().getDimensionPixelSize(R.dimen.size_60);
+        mIvFlower1MarginTop = getResources().getDimensionPixelSize(R.dimen.size_350);
 
+        mIvFlower2Width = getResources().getDimensionPixelSize(R.dimen.size_280);
+        mIvFlower2Height = getResources().getDimensionPixelSize(R.dimen.size_332);
+        mIvFlower2MarginLeft = getResources().getDimensionPixelSize(R.dimen.size_450);
+        mIvFlower2MarginTop = getResources().getDimensionPixelSize(R.dimen.size_360);
 
+        mIvFlower3Width = getResources().getDimensionPixelSize(R.dimen.size_403);
+        mIvFlower3Height = getResources().getDimensionPixelSize(R.dimen.size_369);
+        mIvFlower3MarginLeft = getResources().getDimensionPixelSize(R.dimen.size_730);
+        mIvFlower3MarginTop = getResources().getDimensionPixelSize(R.dimen.size_370);
     }
 
 
@@ -184,24 +210,38 @@ public class FlowerMoveView extends RelativeLayout {
     public boolean onTouchEvent(MotionEvent motionEvent) {
 
 
-
+        int x = (int) motionEvent.getX();
+        int y = (int) motionEvent.getY();
 
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
-               if(isInFlowerRange(mIvFlower1Width, mIvFlower1Height,mIvFlower1MarginLeft,mIvFlower1MarginTop,x,y)){
-                   sendMessage= flower1messageDown;
-                   Log.d("test","true");
-               }
+                if (isInFlowerRange(mIvFlower1Width, mIvFlower1Height, mIvFlower1MarginLeft, mIvFlower1MarginTop, x, y)) {
+                    sendMessage = flower1messageDown;
+                    Log.d("test", "flower1");
+                } else if (isInFlowerRange(mIvFlower2Width, mIvFlower2Height, mIvFlower2MarginLeft, mIvFlower2MarginTop, x, y)) {
+                    sendMessage = flower2messageDown;
+                    Log.d("test", "flower2");
+                } else if (isInFlowerRange(mIvFlower3Width, mIvFlower3Height, mIvFlower3MarginLeft, mIvFlower3MarginTop, x, y)) {
+                    sendMessage = flower3messageDown;
+                    Log.d("test", "flower3");
+                } else {
+                    sendMessage = -1;
+                }
+
+
                 break;
             case MotionEvent.ACTION_MOVE:
+                if (sendMessage == -1)
+                    return true;
+
                 Message msg = new Message();
 
                 msg.what = sendMessage;
 
                 Bundle b = new Bundle();
-                b.putInt("x", (int) motionEvent.getX());
-                b.putInt("y", (int) motionEvent.getY());
+                b.putInt("x", x);
+                b.putInt("y", y);
 
 
                 msg.setData(b);
@@ -210,21 +250,51 @@ public class FlowerMoveView extends RelativeLayout {
                 break;
 
             case MotionEvent.ACTION_UP:
-              if(sendMessage==flower1messageDown){
-                  sendMessage=flower1messageUp;
-              }
+                if (sendMessage == -1)
+                    return true;
 
-                Message msgup = new Message();
+                if(!isInFlowerRange(mIvBasketWidth, mIvBasketHeight, mIvBasketMarginLeft, mIvBasketMarginTop, x, y)) {//判断是否在篮子范围 ,不在
 
-                msgup.what = sendMessage;
+                    if (sendMessage == flower1messageDown) {
+                        sendMessage = flower1messageUp;
+                    } else if (sendMessage == flower2messageDown) {
+                        sendMessage = flower2messageUp;
+                    } else if (sendMessage == flower3messageDown) {
+                        sendMessage = flower3messageUp;
+                    }
 
-                Bundle b_up = new Bundle();
-                b_up.putInt("x", (int) motionEvent.getX());
-                b_up.putInt("y", (int) motionEvent.getY());
+                    Message msgup = new Message();
 
-                msgup.setData(b_up);
+                    msgup.what = sendMessage;
 
-                timeHandler.sendMessage(msgup);
+                    Bundle b_up = new Bundle();
+                    b_up.putInt("x", x);
+
+                    b_up.putInt("y", y);
+
+                    msgup.setData(b_up);
+
+                    timeHandler.sendMessage(msgup);
+
+
+
+                }else{
+                    if (sendMessage == flower1messageDown) {
+
+                        mIvFlower1.setVisibility(GONE);
+                        mIvBasketFlower2.setVisibility(VISIBLE);
+
+                    } else if (sendMessage == flower2messageDown) {
+                        mIvFlower2.setVisibility(GONE);
+                        mIvBasketFlower3.setVisibility(VISIBLE);
+                    } else if (sendMessage == flower3messageDown) {
+                        mIvFlower3.setVisibility(GONE);
+                        mIvBasketFlower1.setVisibility(VISIBLE);
+                    }
+
+                }
+
+
                 break;
 
         }
@@ -235,7 +305,7 @@ public class FlowerMoveView extends RelativeLayout {
     }
 
 
-    private void IVTouch(ImageView mIvFlower, int mIvFlowerWidth, int mIvFlowerHeight, int x, int y,int message) {
+    private void IVTouch(ImageView mIvFlower, int mIvFlowerWidth, int mIvFlowerHeight, int x, int y, int message) {
         LayoutParams flowerLayout = new LayoutParams(
                 mIvFlowerWidth, mIvFlowerHeight);
 
@@ -261,7 +331,6 @@ public class FlowerMoveView extends RelativeLayout {
         flowerLayout.leftMargin = leftMargin;
         flowerLayout.topMargin = topMargin;
 
-        Log.d("test", x + " " + leftMargin + "###" + y + " " + topMargin);
 
         mIvFlower.setLayoutParams(flowerLayout);
 
